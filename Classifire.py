@@ -54,10 +54,10 @@ if __name__ == "__main__":
     fashion_mnist = keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-    print(train_images[0])
-    print(train_labels[0])
-    print(test_images[0])
-    print(test_labels[0])
+    # print(train_images[0])
+    # print(train_labels[0])
+    # print(test_images[0])
+    # print(test_labels[0])
 
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag',
                    'Ankle boot']
@@ -67,31 +67,31 @@ if __name__ == "__main__":
     train_labels
     test_images.shape
 
-    plt.figure()
-    plt.imshow(train_images[0])
-    plt.colorbar()
-    plt.grid(False)
-    plt.show()
-
-    plt.figure()
-    plt.imshow(test_images[0])
-    plt.colorbar()
-    plt.grid(False)
-    plt.show()
+    # plt.figure()
+    # plt.imshow(train_images[0])
+    # plt.colorbar()
+    # plt.grid(False)
+    # plt.show()
+    #
+    # plt.figure()
+    # plt.imshow(test_images[0])
+    # plt.colorbar()
+    # plt.grid(False)
+    # plt.show()
     # If you inspect the first image in the training set, you will see that the pixel values fall in the range of 0 to 255.
 
     train_images = train_images / 255.0
     test_images = test_images / 255.0
 
-    plt.figure(figsize=(10, 10))
-    for i in range(25):
-        plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(train_images[i], cmap=plt.cm.binary)
-        plt.xlabel(class_names[train_labels[i]])
-    plt.show()
+    # plt.figure(figsize=(10, 10))
+    # for i in range(25):
+    #     plt.subplot(5, 5, i + 1)
+    #     plt.xticks([])
+    #     plt.yticks([])
+    #     plt.grid(False)
+    #     plt.imshow(train_images[i], cmap=plt.cm.binary)
+    #     plt.xlabel(class_names[train_labels[i]])
+    # plt.show()
 
     model = keras.Sequential([
         keras.layers.Flatten(input_shape=(28, 28)),
@@ -132,34 +132,34 @@ if __name__ == "__main__":
     plt.show()
 
     #
-
-    test_image1 = np.reshape(test_images[5], (-1, 28, 28))
-    pred1 = model.predict(test_image1)[0]
-    print(pred1)
-    plt.figure(figsize=(6, 3))
-    plt.subplot(1, 2, 1)
-    plot_image_single(pred1, test_images[5])
-    plt.show()
+    # img1 = image.load_img("2.jpeg")
+    # test_image1 = np.reshape(test_images[5], (-1, 28, 28))
+    # pred1 = model.predict(test_image1)[0]
+    # print(pred1)
+    # plt.figure(figsize=(6, 3))
+    # plt.subplot(1, 2, 1)
+    # plot_image_single(pred1, test_images[5])
+    # plt.show()
 
     #
 
-    img = image.load_img("2.jpeg")
+    img = image.load_img("1.jpeg")
     image_x = 28
     image_y = 28
     img = img.resize((image_x, image_y))
     # img = cv2.resize(img, (image_x, image_y))
     img = np.array(img, dtype=np.float32)
     img = np.reshape(img, (-1, image_x, image_y))
+    img = img / 255.0
     pred_probab = model.predict(img)[0]
     pred_class = list(pred_probab).index(max(pred_probab))
     print("***")
     print(pred_probab)
     print(max(pred_probab), pred_class)
 
-    i = 0
     plt.figure(figsize=(6, 3))
     plt.subplot(1, 2, 1)
-    plot_image_single(pred_probab, image.load_img("2.jpeg"))
+    plot_image_single(pred_probab, image.load_img("1.jpeg"))
     # plt.subplot(1, 2, 2)
     # plot_value_array(i, predictions, test_labels)
     plt.show()

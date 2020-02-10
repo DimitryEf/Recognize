@@ -68,18 +68,19 @@ if __name__ == "__main__":
 
     #
 
-    img_path = "3.jpeg"
+    img_path = "2.jpeg"
     img = image.load_img(img_path)
     image_x = 28
     image_y = 28
     img = img.resize((image_x, image_y))
     img = np.array(img, dtype=np.float32)
     img = np.reshape(img, (-1, image_x, image_y))
-    pred_probab = model.predict(img)[1]
+    img = img / 255.0
+    pred_probab = model.predict(img)[0]
     pred_class = list(pred_probab).index(max(pred_probab))
     print("***")
     print(pred_probab)
-    print("{} {:2.0f}%".format(pred_class, max(pred_probab)))
+    print(max(pred_probab), pred_class)
 
     plt.figure(figsize=(6, 3))
     plt.subplot(1, 2, 1)
