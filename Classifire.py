@@ -51,6 +51,9 @@ def plot_value_array(i, predictions_array, true_label):
 
 
 if __name__ == "__main__":
+
+    NEED_TRAIN = False
+
     fashion_mnist = keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
@@ -103,7 +106,7 @@ if __name__ == "__main__":
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
 
-    if False:
+    if NEED_TRAIN:
         start_time = timer()
         model.fit(train_images, train_labels, epochs=10)
         print("Total training time: {:g} secs".format(timer() - start_time))
