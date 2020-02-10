@@ -6,6 +6,7 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from timeit import default_timer as timer
+from PIL import Image
 
 
 def plot_image(i, predictions_array, true_label, img):
@@ -44,36 +45,28 @@ if __name__ == "__main__":
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag',
                    'Ankle boot']
 
+    # arr2im = Image.fromarray(test_images[0])
+    # arr2im.save('1.jpeg')
+
+    print(type(test_images))
+    print(len(test_images))
+    print(type(test_images[0]))
+
+    new_test_images = np.array([np.array(Image.open("1.jpeg"))])
+
+    print(type(new_test_images))
+    print(type(new_test_images[0]))
+
     train_images.shape
     # Each Label is between 0-9
     train_labels
-    test_images.shape
+    new_test_images.shape
 
-    plt.figure()
-    plt.imshow(train_images[0])
-    plt.colorbar()
-    plt.grid(False)
-    plt.show()
-
-    plt.figure()
-    plt.imshow(test_images[0])
-    plt.colorbar()
-    plt.grid(False)
-    plt.show()
     # If you inspect the first image in the training set, you will see that the pixel values fall in the range of 0 to 255.
 
-    train_images = train_images / 255.0
-    test_images = test_images / 255.0
 
-    plt.figure(figsize=(10, 10))
-    for i in range(25):
-        plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(train_images[i], cmap=plt.cm.binary)
-        plt.xlabel(class_names[train_labels[i]])
-    plt.show()
+    new_test_images = new_test_images / 255.0
+
 
     model = keras.Sequential([
         keras.layers.Flatten(input_shape=(28, 28)),
@@ -87,18 +80,20 @@ if __name__ == "__main__":
 
     model.load_weights('./checkpoints/my_checkpoint')
 
-    test_loss, test_acc = model.evaluate(test_images, test_labels)
-    print('Test accuracy:', test_acc)
+    # test_loss, test_acc = model.evaluate(new_test_images, test_labels)
+    # print('Test accuracy:', test_acc)
 
-    predictions = model.predict(test_images)
-    predictions[0]
 
-    np.argmax(predictions[0])
+
+    predictions = model.predict(new_test_images)[0]
+    predictions
+
+    np.argmax(predictions)
     # Model is most confident that it's an ankle boot. Let's see if it's correct
 
     test_labels[0]
 
-    i = 3
+    i = 0
     plt.figure(figsize=(6, 3))
     plt.subplot(1, 2, 1)
     plot_image(i, predictions, test_labels, test_images)
