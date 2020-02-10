@@ -6,6 +6,19 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from timeit import default_timer as timer
+from tensorflow.keras.preprocessing import image
+
+
+def plot_image_single(predictions_array, img):
+  plt.grid(False)
+  plt.xticks([])
+  plt.yticks([])
+  plt.imshow(img, cmap=plt.cm.binary)
+  predicted_label = np.argmax(predictions_array)
+  color = 'black'
+  plt.xlabel("{} {:2.0f}% ".format(class_names[predicted_label],
+                                100*np.max(predictions_array)),
+                                color=color)
 
 
 def plot_image(i, predictions_array, true_label, img):
@@ -40,6 +53,11 @@ def plot_value_array(i, predictions_array, true_label):
 if __name__ == "__main__":
     fashion_mnist = keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+
+    print(train_images[0])
+    print(train_labels[0])
+    print(test_images[0])
+    print(test_labels[0])
 
     class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt', 'Sneaker', 'Bag',
                    'Ankle boot']
@@ -85,7 +103,7 @@ if __name__ == "__main__":
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
 
-    if True:
+    if False:
         start_time = timer()
         model.fit(train_images, train_labels, epochs=10)
         print("Total training time: {:g} secs".format(timer() - start_time))
@@ -98,16 +116,53 @@ if __name__ == "__main__":
 
     predictions = model.predict(test_images)
     predictions[0]
+    print(predictions[0])
 
     np.argmax(predictions[0])
     # Model is most confident that it's an ankle boot. Let's see if it's correct
 
     test_labels[0]
 
-    i = 1
+    i = 100
     plt.figure(figsize=(6, 3))
     plt.subplot(1, 2, 1)
     plot_image(i, predictions, test_labels, test_images)
     plt.subplot(1, 2, 2)
     plot_value_array(i, predictions, test_labels)
     plt.show()
+
+    #
+
+    test_image1 = np.reshape(test_images[5], (-1, 28, 28))
+    pred1 = model.predict(test_image1)[0]
+    print(pred1)
+    plt.figure(figsize=(6, 3))
+    plt.subplot(1, 2, 1)
+    plot_image_single(pred1, test_images[5])
+    plt.show()
+
+    #
+
+    img = image.load_img("2.jpeg")
+    image_x = 28
+    image_y = 28
+    img = img.resize((image_x, image_y))
+    # img = cv2.resize(img, (image_x, image_y))
+    img = np.array(img, dtype=np.float32)
+    img = np.reshape(img, (-1, image_x, image_y))
+    pred_probab = model.predict(img)[0]
+    pred_class = list(pred_probab).index(max(pred_probab))
+    print("***")
+    print(pred_probab)
+    print(max(pred_probab), pred_class)
+
+    i = 0
+    plt.figure(figsize=(6, 3))
+    plt.subplot(1, 2, 1)
+    plot_image_single(pred_probab, image.load_img("2.jpeg"))
+    # plt.subplot(1, 2, 2)
+    # plot_value_array(i, predictions, test_labels)
+    plt.show()
+
+
+
