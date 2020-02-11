@@ -21,6 +21,7 @@ import datetime
 
 #  http://localhost:8000/abc?def=/9j/4AAQSkZJRgABAQEAYABgAAD/4QBmRXhpZgAATU0AKgAAAAgABAEaAAUAAAABAAAAPgEbAAUAAAABAAAARgEoAAMAAAABAAIAAAExAAIAAAAQAAAATgAAAAAAAABgAAAAAQAAAGAAAAABcGFpbnQubmV0IDQuMS42AP/bAEMAAgEBAgEBAgICAgICAgIDBQMDAwMDBgQEAwUHBgcHBwYHBwgJCwkICAoIBwcKDQoKCwwMDAwHCQ4PDQwOCwwMDP/bAEMBAgICAwMDBgMDBgwIBwgMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDP/AABEIABwAHAMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AP5/6KK+5f2Mv2NPh/8AHn9nfSb6702O6uLhb3+29aXUZv7R06/ivbZoNPhtC0UbW9xYrLicLcMss7MTEIdpAPhqpp7eWCTa0cykdmr92JP+CbXwK+L2j2mpeJvh3b/21b6XHl4NQuLKL93GPLt/Lt5I45PLjAj8z2r8x/8Agr38Cf8AhS/7butWen6fb6b4f1LTNPu9EihP7n7IlslsBH/sJJbyxj/rlQB6R+zB8Qv2Q4fDulQ64uteF9ct7W3N5d+JPDI1y1ku8fvHjkt5fM8veOn2evqzwp+3Z+y/4LtY7i6+LugXUenx/uLXQvB+s/aZP+mccdxbxxR/9/a/GWigD94vgf8A8Fmf2PfHdprFr4m8afFnwNFY28H2KTVvC8dx9vkk8zzPLjs5Ljy/L/d/6yT95XyL/wAFPv2/fg/8YPj7pN98L9duNa8O2GgxWUl3deH5bOSScXNzIfkZVOPLki5xivzXooA//9k=
 
+
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -36,9 +37,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         # img_name = str(token_urlsafe(4))
         img_name = str(datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S"))
-        im = open(img_name + '.jpeg', "w")
-        im.write(decodebytes(bytes(base64_img)))
-        im.close()
+        file_name = img_name + '.jpeg'
+
+        # im = open(file_name, "w")
+        # im.write(decodebytes(bytes(base64_img)))
+        # im.close()
+
+        imgdata = base64.b64decode(base64_img.replace(' ', '+'))
+        with open(file_name, 'wb') as f:
+            f.write(imgdata)
+
 
         img_path = img_name+'.jpeg'
         img = image.load_img(img_path)
